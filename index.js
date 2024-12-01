@@ -4,10 +4,10 @@ import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser"; // Import cookie-parser
 
-import userRoutes from "../backend/routes/userRoutes.js";
-import subscriptionRoutes from "../backend/routes/subscriptionRoutes.js";
-import articleRoutes from "../backend/routes/articleRoutes.js";
-import "../backend/cronJobs/deactivateExpiredSubscriptions.js";
+import userRoutes from "./routes/userRoutes.js";
+import subscriptionRoutes from "./routes/userRoutes.js";
+import articleRoutes from "./routes/articleRoutes.js";
+import "./cronJobs/deactivateExpiredSubscriptions.js";
 import commentRoutes from "./routes/commentRoutes.js";
 import libraryRoute from "./routes/libraryRoutes.js";
 dotenv.config();
@@ -28,7 +28,7 @@ app.use((err, req, res, next) => {
 });
 
 const corsOptions = {
-  origin:  "*",
+  origin: "*",
   credentials: true, //access-control-allow-credentials:true
   optionSuccessStatus: 200,
 };

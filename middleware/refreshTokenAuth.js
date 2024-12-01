@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import User from "../../backend/models/userModel.js"; // Ensure correct path
+import User from "../models/userModel.js"; // Ensure correct path
 
 // Middleware to verify the refresh token and attach user to req.user
 export const authenticateRefreshToken = async (req, res, next) => {
