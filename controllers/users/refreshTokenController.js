@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
+
 import User from "../../models/userModel.js";
 
 export const refreshToken = async (req, res) => {

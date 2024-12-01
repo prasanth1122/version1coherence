@@ -1,7 +1,7 @@
 import crypto from "crypto";
 import User from "../../models/userModel.js";
 import nodemailer from "nodemailer";
-import bcrypt from "bcrypt";
+import bcrypt from "bcryptjs";
 
 // Request Password Reset
 export const requestPasswordReset = async (req, res) => {
