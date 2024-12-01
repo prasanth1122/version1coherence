@@ -5,7 +5,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser"; // Import cookie-parser
 
 import userRoutes from "./routes/userRoutes.js";
-import subscriptionRoutes from "./routes/userRoutes.js";
+import subscriptionRoutes from "./routes/subscriptionRoutes.js";
 import articleRoutes from "./routes/articleRoutes.js";
 import "./cronJobs/deactivateExpiredSubscriptions.js";
 import commentRoutes from "./routes/commentRoutes.js";
