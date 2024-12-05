@@ -6,10 +6,11 @@ import cookieParser from "cookie-parser"; // Import cookie-parser
 
 import userRoutes from "./routes/userRoutes.js";
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";
-import articleRoutes from "./routes/articleRoutes.js";
+
 import "./cronJobs/deactivateExpiredSubscriptions.js";
-import commentRoutes from "./routes/commentRoutes.js";
+
 import libraryRoute from "./routes/libraryRoutes.js";
+import periodicalRoute from "./routes/periodicalRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -43,9 +44,9 @@ mongoose
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
-app.use("/api/articles", articleRoutes);
-app.use("/api/comment", commentRoutes);
+
 app.use("/api/library", libraryRoute);
+app.use("/api/periodical", periodicalRoute);
 // Default route for testing server
 app.get("/", (req, res) => {
   res.send("API is running...");

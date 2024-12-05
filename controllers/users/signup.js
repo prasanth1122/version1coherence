@@ -3,7 +3,7 @@ import User from "../../models/userModel.js";
 
 export const signup = async (req, res) => {
   try {
-    const { name, email, password, role, userType } = req.body;
+    const { name, email, password, role, userType, institution } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: "All fields are required" });
@@ -15,6 +15,9 @@ export const signup = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Password must be at least 8 characters long" });
+    }
+    if (!institution) {
+      return res.status(400).json({ message: "Institution is required" });
     }
 
     const existingUser = await User.findOne({ email });
@@ -31,6 +34,7 @@ export const signup = async (req, res) => {
       password: hashedPassword,
       role,
       userType,
+      institution,
     });
 
     res.status(201).json({

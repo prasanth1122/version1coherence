@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-
+import mongoose from "mongoose"; // Import mongoose at the top
 import jwt from "jsonwebtoken";
 import User from "../../models/userModel.js";
 
@@ -126,6 +126,72 @@ export const deleteUser = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       message: "Error deleting user",
+      error: err.message,
+    });
+  }
+};
+
+export const getUserById = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    // Trim and validate ObjectId
+
+    // Find the user by ID
+    const user = await User.findById(userId, "-password"); // Exclude the password field for security
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "User retrieved successfully",
+      user,
+    });
+  } catch (err) {
+    console.error("Error fetching user by ID:", err);
+    res.status(500).json({
+      message: "Error fetching user data",
+      error: err.message,
+    });
+  }
+};
+
+export const updateUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const updates = req.body; // Extract updates from the request body
+
+    // Validate ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ message: "Invalid user ID" });
+    }
+
+    // Disallow updating sensitive fields like password or role directly
+    const restrictedFields = ["password", "role"];
+    restrictedFields.forEach((field) => {
+      if (field in updates) delete updates[field];
+    });
+
+    // Update the user by ID
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { $set: updates },
+      { new: true, runValidators: true, projection: "-password" } // Exclude password from the result
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({
+      message: "User updated successfully",
+      user: updatedUser,
+    });
+  } catch (err) {
+    console.error("Error updating user by ID:", err);
+    res.status(500).json({
+      message: "Error updating user data",
       error: err.message,
     });
   }

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema(
       enum: ["student", "educator"], // User types for 'user' role
       default: "student",
     },
-
+    institution: { type: String, required: true },
     lastLogin: { type: Date, default: null }, // Optional
     resetPasswordToken: { type: String }, // Token for password reset
     resetPasswordExpires: { type: Date }, // Expiry time for reset token

@@ -4,6 +4,7 @@ import {
   deleteUser,
   getAllUsers,
   login,
+  getUserById,
 } from "../controllers/users/login.js";
 import { logout } from "../controllers/users/logoutController.js";
 import { checkEmail, signup } from "../controllers/users/signup.js";
@@ -25,7 +26,7 @@ router.post("/logout", logout);
 router.post("/adminlogin", adminLogin);
 router.delete("/:userId", authenticateJWT, deleteUser);
 router.post("/checkemail", checkEmail);
-
+router.get("/:userId", authenticateJWT, getUserById);
 // Refresh token route
 router.post("/refreshtoken", authenticateRefreshToken, refreshToken);
 router.get(

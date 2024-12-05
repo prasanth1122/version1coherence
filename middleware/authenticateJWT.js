@@ -10,7 +10,7 @@ export const authenticateJWT = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET); 
     req.user = decoded; // Attach decoded JWT payload (user) to request
     next();
   } catch (err) {
