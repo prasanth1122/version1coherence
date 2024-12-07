@@ -10,14 +10,14 @@ const subscriptionSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["free", "basic", "premium", "institutional"],
-      default: "free",
+      enum: ["basic", "premium", "institutional"],
+      default: "basic",
     },
     startDate: { type: Date, default: Date.now }, // Subscription start date
     endDate: {
       type: Date,
       required: function () {
-        return this.type !== "free";
+        return this.type !== "basic";
       },
     }, // Only required if the type is not 'free'
     isActive: { type: Boolean, default: true },
@@ -25,14 +25,14 @@ const subscriptionSchema = new mongoose.Schema(
       {
         type: {
           type: String,
-          enum: ["free", "basic", "premium", "institutional"],
+          enum: ["basic", "premium", "institutional"],
           required: true,
         },
         startDate: { type: Date, required: true },
         endDate: {
           type: Date,
           required: function () {
-            return this.type !== "free";
+            return this.type !== "basic";
           },
         },
         renewedAt: { type: Date, default: null },

@@ -17,9 +17,7 @@ export const createPeriodical = async (req, res) => {
 export const getPeriodicalById = async (req, res) => {
   try {
     const { id } = req.params;
-    const periodical = await Periodical.findById(id).populate(
-      "articles.articleId"
-    );
+    const periodical = await Periodical.findById(id);
     if (!periodical) {
       return res
         .status(404)

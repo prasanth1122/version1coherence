@@ -3,14 +3,15 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser"; // Import cookie-parser
-
+import paymentRoute from "./routes/paymentRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import subscriptionRoutes from "./routes/subscriptionRoutes.js";
-
+import collectionRoute from "./routes/collectionRoutes.js";
 import "./cronJobs/deactivateExpiredSubscriptions.js";
-
+import commentRoutes from "./routes/commentRoute.js";
 import libraryRoute from "./routes/libraryRoutes.js";
 import periodicalRoute from "./routes/periodicalRoutes.js";
+import likedislikeRoute from "./routes/likedislikeRoute.js";
 dotenv.config();
 
 const app = express();
@@ -44,14 +45,16 @@ mongoose
 // Routes
 app.use("/api/users", userRoutes);
 app.use("/api/subscriptions", subscriptionRoutes);
-
+app.use("/api/payment", paymentRoute);
 app.use("/api/library", libraryRoute);
 app.use("/api/periodical", periodicalRoute);
 // Default route for testing server
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
-
+app.use("/api/comments", commentRoutes);
+app.use("/api/likedislike", likedislikeRoute);
+app.use("/api/collection", collectionRoute);
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

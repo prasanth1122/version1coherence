@@ -7,7 +7,8 @@ const periodicalSchema = new mongoose.Schema({
   month: { type: Number, required: true }, // Publishing month
   year: { type: Number, required: true }, // Publishing year
   views: { type: Number, default: 0 }, // Number of views
-  author:{type: String, required: true },
+  subscription: { type: String, required: true },
+  author: { type: String, required: true },
   introduction: { type: String, required: true }, // Introduction of the periodical
   valueProposition: { type: String, required: true }, // Value proposition statement
   articles: [
@@ -18,11 +19,15 @@ const periodicalSchema = new mongoose.Schema({
       category: { type: String, required: true }, // Area or category of the article
       month: { type: Number, required: true }, // Month of the article
       year: { type: Number, required: true }, // Year of the article
-      author:{type: String, required: true },
+      author: { type: String, required: true },
       valueProposition: { type: String, required: true }, // Value proposition statement of the article
     },
   ],
 });
 
-const Periodical = mongoose.model("Periodical", periodicalSchema, "Periodicals");
+const Periodical = mongoose.model(
+  "Periodical",
+  periodicalSchema,
+  "Periodicals"
+);
 export default Periodical; // ES6 export

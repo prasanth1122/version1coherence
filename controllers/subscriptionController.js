@@ -3,6 +3,8 @@ import { calculateEndDate } from "../utils/subscriptionUtils.js"; // Utility fun
 import mongoose from "mongoose";
 
 // Utility function: Deactivate a subscription and update its history
+// Get user subscription data (active and history)
+
 
 // Deactivate the existing subscription and push it to history
 const deactivateSubscription = async (subscription, status) => {
@@ -168,12 +170,12 @@ export const createFreeSubscription = async (req, res) => {
 
     const freeSubscription = new Subscription({
       userId,
-      type: "free",
+      type: "basic",
       startDate,
       isActive: true,
       history: [
         {
-          type: "free",
+          type: "basic",
           startDate,
           status: "active",
         },

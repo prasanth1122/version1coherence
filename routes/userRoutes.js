@@ -5,6 +5,7 @@ import {
   getAllUsers,
   login,
   getUserById,
+  updateUserById,
 } from "../controllers/users/login.js";
 import { logout } from "../controllers/users/logoutController.js";
 import { checkEmail, signup } from "../controllers/users/signup.js";
@@ -27,6 +28,7 @@ router.post("/adminlogin", adminLogin);
 router.delete("/:userId", authenticateJWT, deleteUser);
 router.post("/checkemail", checkEmail);
 router.get("/:userId", authenticateJWT, getUserById);
+
 // Refresh token route
 router.post("/refreshtoken", authenticateRefreshToken, refreshToken);
 router.get(
@@ -38,5 +40,5 @@ router.get(
 // Password reset routes
 router.post("/request-password-reset", requestPasswordReset); // Route to request password reset
 router.post("/reset-password", resetPassword); // Route to reset password
-
+router.patch("/:id", authenticateJWT, updateUserById);
 export default router;

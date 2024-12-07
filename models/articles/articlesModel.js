@@ -3,7 +3,9 @@ import Periodical from "../articles/periodicalModel.js"; // Ensure correct path 
 
 const commentSchema = new mongoose.Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+
   text: { type: String, required: true },
+  username: { type: String, required: true },
   createdAt: { type: Date, default: Date.now },
 });
 
@@ -18,6 +20,9 @@ const articleSchema = new mongoose.Schema({
     ref: "Periodical",
     required: true,
   },
+  relevence: { type: String, required: true },
+  cite: { type: String, required: true },
+  subscription: { type: String, required: true },
   author: { type: String, required: true },
   valueProposition: { type: String, required: true },
   year: { type: Number, required: true },
@@ -57,29 +62,6 @@ articleSchema.post("save", async function (doc, next) {
         valueProposition: doc.valueProposition || "",
       });
       await periodical.save();
-    }
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
-commentSchema.post("save", async function (doc, next) {
-  try {
-    const article = await mongoose.model("Article").findById(doc.articleId); // Ensure reference
-    if (!article) {
-      throw new Error("Associated Article not found");
-    }
-
-    // Check for duplicate comments
-    const isDuplicate = article.comments.some(
-      (comment) => comment._id.toString() === doc._id.toString()
-    );
-
-    if (!isDuplicate) {
-      article.comments.push(doc);
-      article.commentCount += 1; // Update comment count
-      await article.save();
     }
     next();
   } catch (error) {

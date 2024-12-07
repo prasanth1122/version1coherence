@@ -26,7 +26,7 @@ router.post(
 router.get(
   "/:userId",
   authenticateJWT, // Ensure the user is authenticated
-  authorizeRoles(["user", "admin"]), // Optional: Role-based access
+  // Optional: Role-based access
   getUserSubscription
 );
 
