@@ -1,16 +1,16 @@
 import dotenv from "dotenv";
-dotenv.config();
 
 import Razorpay from "razorpay";
 import express from "express";
 import crypto from "crypto"; // Import crypto using ES6 syntax
 import { authenticateJWT } from "../middleware/authenticateJWT.js";
+dotenv.config();
 const router = express.Router();
 
 /* eslint-disable no-undef */
 const razorpay = new Razorpay({
   key_id: process.env.RAZORPAY_KEY_ID,
-  key_secret: process.env.RAZORPAY_KEY_SECRET,
+  key_secret: process.env.RAZORPAY_SECRET,
 });
 /* eslint-enable no-undef */
 
@@ -26,15 +26,16 @@ router.post("/order", (req, res) => {
 
     razorpay.orders.create(options, (error, order) => {
       if (error) {
-        console.log(error);
-        return res.status(500).json({ message: "Something Went Wrong!" });
+        console.error("Razorpay Error:", error);
+        return res
+          .status(500)
+          .json({ message: "Something Went Wrong!", error });
       }
       res.status(200).json({ data: order });
-      console.log(order);
     });
   } catch (error) {
+    console.error("Internal Server Error:", error);
     res.status(500).json({ message: "Internal Server Error!" });
-    console.log(error);
   }
 });
 
@@ -54,20 +55,31 @@ router.post("/capture-payment", async (req, res) => {
   }
 });
 
-router.post("/verify-payment", (req, res) => {
+router.post("/verifypayment", (req, res) => {
   const { paymentId, orderId, signature } = req.body;
 
-  // Construct the expected signature
-  const hmac = crypto.createHmac("sha256", razorpay.key_secret);
-  hmac.update(`${orderId}|${paymentId}`);
-  const generatedSignature = hmac.digest("hex");
-
-  if (generatedSignature === signature) {
-    res.json({ success: true });
-  } else {
-    res
+  if (!paymentId || !orderId || !signature) {
+    return res
       .status(400)
-      .json({ success: false, message: "Payment verification failed" });
+      .json({ success: false, message: "Missing parameters" });
+  }
+
+  try {
+    // Generate the expected signature
+    const hmac = crypto.createHmac("sha256", razorpay.key_secret);
+    hmac.update(`${orderId}|${paymentId}`);
+    const generatedSignature = hmac.digest("hex");
+
+    if (generatedSignature === signature) {
+      res.json({ success: true });
+    } else {
+      res.status(400).json({ success: false, message: "Invalid signature" });
+    }
+  } catch (error) {
+    console.error("Verification error:", error);
+    res
+      .status(500)
+      .json({ success: false, message: "Verification failed", error });
   }
 });
 
